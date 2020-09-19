@@ -10,11 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_19_005654) do
+ActiveRecord::Schema.define(version: 2020_09_19_114906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "candidate_votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "vote_id", null: false
+    t.uuid "candidate_id", null: false
+    t.boolean "block_vote"
+    t.integer "preference"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["candidate_id"], name: "index_candidate_votes_on_candidate_id"
+    t.index ["vote_id"], name: "index_candidate_votes_on_vote_id"
+  end
 
   create_table "candidates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "position_id"
@@ -31,6 +42,7 @@ ActiveRecord::Schema.define(version: 2020_09_19_005654) do
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "voting_system"
     t.index ["token"], name: "index_elections_on_token"
   end
 
@@ -42,6 +54,16 @@ ActiveRecord::Schema.define(version: 2020_09_19_005654) do
     t.index ["election_id"], name: "index_positions_on_election_id"
   end
 
+  create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "election_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_votes_on_election_id"
+  end
+
+  add_foreign_key "candidate_votes", "candidates"
+  add_foreign_key "candidate_votes", "votes"
   add_foreign_key "candidates", "positions"
   add_foreign_key "positions", "elections"
+  add_foreign_key "votes", "elections"
 end

@@ -8,7 +8,7 @@ const VoteForm = ({ election }) => {
   const onSubmit = e => {
     e.preventDefault()
     setLoading(true)
-    fetchPost('/api/elections/' + election.get('id') + '/vote')
+    fetchPost('/api/elections/' + election.get('id'))
       .then(console.log)
       // TODO: Show error message
       .catch(() => setLoading(false))

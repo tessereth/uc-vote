@@ -3,4 +3,5 @@ class Election < ApplicationRecord
   has_many :candidates, through: :positions
 
   enum state: { pending: 'pending', open: 'open', closed: 'closed' }, _prefix: true
+  enum voting_system: { block_voting: 'block_voting', preferential: 'preferential' }
 end

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       collection do
         post 'token'
       end
+
+      resources :votes, only: :create
     end
   end
 
