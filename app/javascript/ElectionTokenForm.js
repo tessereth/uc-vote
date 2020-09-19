@@ -12,8 +12,7 @@ const ElectionTokenForm = () => {
     e.preventDefault()
     setLoading(true)
     fetchPost('/api/elections/token', {token})
-      .then(res => res.json())
-      .then(res => history.push('/elections/' + res.id))
+      .then(res => history.push('/elections/' + res.get('id')))
       // TODO: Show error message
       .catch(() => setLoading(false))
   }

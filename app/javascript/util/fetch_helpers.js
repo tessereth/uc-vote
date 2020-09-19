@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable'
+
 export function fetchGet(url, params={}) {
   const urlParams = new URLSearchParams(params)
   return fetch(url + '?' + urlParams.toString(), {
@@ -11,10 +13,11 @@ export function fetchGet(url, params={}) {
         throw new Error('Failed to fetch')
       }
     })
+    .then(res => res.json())
+    .then(fromJS)
 }
 
 export function fetchPost(url, params={}) {
-  console.log(params)
   return fetch(url, {
     method: 'POST',
     headers: defaultHeaders(),
@@ -27,11 +30,14 @@ export function fetchPost(url, params={}) {
         throw new Error('Failed to fetch')
       }
     })
+    .then(res => res.json())
+    .then(fromJS)
 }
 
 function defaultHeaders() {
   return {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
     'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
   }
 }
