@@ -5,6 +5,7 @@ import PrimaryNav from "./PrimaryNav"
 import PrimaryFooter from "./PrimaryFooter"
 import Home from "./Home"
 import About from "./About"
+import Election from "./Election"
 import { Provider, testContext, reducer } from "./context"
 
 class App extends Component {
@@ -26,6 +27,7 @@ class App extends Component {
           <main>
             <Route exact path="/" component={Home} />
             <Route exact path="/about" component={About} />
+            <Route exact path="/elections/:id" component={Election} />
           </main>
           <PrimaryFooter />
         </Provider>
