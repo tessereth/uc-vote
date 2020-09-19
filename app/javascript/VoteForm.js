@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
 import { fetchPost } from './util/fetch_helpers'
 import classnames from 'classnames'
+import { Map as ImmMap } from 'immutable'
 
 const VoteForm = ({ election }) => {
   const [loading, setLoading] = useState(false)
+  const [votes, setVotes] = useState(ImmMap())
+
+  const onClick = candidateId => e => {
+    setVotes(votes.set(candidateId, e.target.checked))
+  }
 
   const onSubmit = e => {
     e.preventDefault()
     setLoading(true)
-    fetchPost('/api/elections/' + election.get('id'))
+    fetchPost(
+      '/api/elections/' + election.get('id') + '/votes',
+      { vote: votes.toJS() })
       .then(console.log)
       // TODO: Show error message
       .catch(() => setLoading(false))
@@ -25,7 +33,11 @@ const VoteForm = ({ election }) => {
                 <div className="field" key={candidate.get('id')}>
                   <div className="control">
                     <label className="checkbox">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={votes.get(candidate.get('id'), false)}
+                        onChange={onClick(candidate.get('id'))}
+                      />
                       &nbsp;{candidate.get('name')}
                     </label>
                   </div>

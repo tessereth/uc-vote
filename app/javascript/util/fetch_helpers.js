@@ -21,7 +21,7 @@ export function fetchPost(url, params={}) {
   return fetch(url, {
     method: 'POST',
     headers: defaultHeaders(),
-    body: JSON.stringify(params)
+    body: 'toJS' in params ? JSON.stringify(params.toJS()) : JSON.stringify(params)
   })
     .then(res => {
       if (res.ok) {
