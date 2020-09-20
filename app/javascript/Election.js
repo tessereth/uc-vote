@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useParams } from 'react-router-dom'
 import { fetchGet } from './util/fetch_helpers'
 import VoteForm from './VoteForm'
+import Hero from './util/Hero'
 
 const Election = () => {
   let { id } = useParams()
@@ -16,38 +17,37 @@ const Election = () => {
       .finally(() => setLoading(false))
   }, [id])
 
-  return <section className="section">
-    <div className="container">
-      <div className="content">
-        {loading ?
-          <div>
-            <progress className="progress is-primary"/>
-          </div> :
-          <React.Fragment>
-            <h1>{election.get('name')}</h1>
-            <p>
-              {election.get('description')}
-            </p>
-          </React.Fragment>
-        }
-      </div>
-    </div>
-    {termsAccepted ?
-      <VoteForm election={election} /> :
+  return (
+    loading ?
       <section className="section">
         <div className="container">
-          <div className="content">
-            <p>
-              Please confirm that you are eligible to vote and have not already voted in this election.
-            </p>
-            <button className="button is-primary" onClick={() => setTermsAccepted(true)}>
-              Yes, I can vote
-            </button>
-          </div>
+          <progress className="progress is-primary"/>
         </div>
-      </section>
-    }
-  </section>
+      </section> :
+      <React.Fragment>
+        <Hero title={election.get('name')} />
+        <section className="section">
+          <div className="container">
+            <div className="content">
+              <p>
+                {election.get('description')}
+              </p>
+              {termsAccepted ?
+                <VoteForm election={election} /> :
+                <React.Fragment>
+                  <p>
+                    Please confirm that you are eligible to vote and have not already voted in this election.
+                  </p>
+                  <button className="button is-primary" onClick={() => setTermsAccepted(true)}>
+                    Yes, I can vote
+                  </button>
+                </React.Fragment>
+              }
+            </div>
+          </div>
+        </section>
+      </React.Fragment>
+  )
 }
 
 export default Election

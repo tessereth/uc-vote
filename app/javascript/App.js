@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import PrimaryNav from './PrimaryNav'
 import PrimaryFooter from './PrimaryFooter'
 import Home from './Home'
 import About from './About'
 import Election from './Election'
 import Voted from './Voted'
+import UnknownPage from './UnknownPage'
 import { Provider, testContext, reducer } from './context'
 
 class App extends Component {
@@ -25,10 +26,23 @@ class App extends Component {
         <Provider value={this.state.context}>
           <PrimaryNav />
           <main>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/elections/:id" component={Election} />
-            <Route exact path="/elections/:id/voted" component={Voted} />
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route exact path="/about">
+                <About />
+              </Route>
+              <Route exact path="/elections/:id">
+                <Election />
+              </Route>
+              <Route exact path="/elections/:id/voted">
+                <Voted />
+              </Route>
+              <Route path="*">
+                <UnknownPage />
+              </Route>
+            </Switch>
           </main>
           <PrimaryFooter />
         </Provider>

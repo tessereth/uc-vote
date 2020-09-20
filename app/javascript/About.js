@@ -1,16 +1,19 @@
-import React from "react"
+import React from 'react'
+import Hero from './util/Hero'
 
 const About = () => (
-  <section className="section">
-    <div className="container">
-      <div className="content">
-        <h1>About UC Vote</h1>
-        <p>
-          UC Vote is an elections platform for running Uniting Church elections.
-        </p>
+  <React.Fragment>
+    <Hero title="About UC Vote"/>
+    <section className="section">
+      <div className="container">
+        <div className="content">
+          <p>
+            UC Vote is an elections platform for running Uniting Church elections.
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </React.Fragment>
 )
 
 export default About

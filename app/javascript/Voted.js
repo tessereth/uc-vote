@@ -1,6 +1,7 @@
 import React from "react"
 import { Link, Redirect, useLocation, useParams } from 'react-router-dom'
 import { fromJS } from 'immutable'
+import Hero from './util/Hero'
 
 const Voted = () => {
   const { id } = useParams()
@@ -9,12 +10,19 @@ const Voted = () => {
   const election = state && state.get('election')
   const vote = state && state.get('vote')
 
+  if (!election || !vote) {
+    if (id) {
+      return <Redirect to={`/elections/${id}`}/>
+    } else {
+      return <Redirect to="/"/>
+    }
+  }
+
   return (
-    <section className="section">
-      <div className="container">
-      {election && vote ?
-        <React.Fragment>
-          <h1 className="title">{election.get('name')}</h1>
+    <React.Fragment>
+      <Hero title={election.get('name')} />
+      <section className="section">
+        <div className="container">
           <article className="message is-success">
             <div className="message-header">
               <p>Vote recorded</p>
@@ -27,21 +35,17 @@ const Voted = () => {
                   <b>{vote.get('id', '<unknown>')}</b>.
                 </p>
                 <p>Please record this id in case you need to contact support.</p>
+                <p>
+                  If someone else would like to vote in this election, you can{' '}
+                  <Link to={`/elections/${election.get('id')}`}>vote again</Link> or{' '}
+                  <Link to="/">return to the home page</Link>.
+                </p>
               </div>
             </div>
           </article>
-          <p>
-            If someone else would like to vote in this election, you can{' '}
-            <Link to={`/elections/${election.get('id')}`}>vote again</Link> or{' '}
-            <Link to="/">return to the home page</Link>.
-          </p>
-        </React.Fragment> :
-        id ?
-          <Redirect to={`/elections/${id}`} /> :
-          <Redirect to="/" />
-      }
-    </div>
-  </section>
+        </div>
+      </section>
+    </React.Fragment>
   )
 }
 

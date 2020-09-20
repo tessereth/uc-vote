@@ -31,35 +31,31 @@ const VoteForm = ({ election }) => {
   }
 
   return (
-    <section className="section">
-      <div className="container">
-        <form onSubmit={onSubmit}>
-          {election.get('positions').map(position => (
-            <div key={position.get('id')} className="content">
-              <h2 className="subtitle">{position.get('name')}</h2>
-              {position.get('candidates').map(candidate => (
-                <div className="field" key={candidate.get('id')}>
-                  <input
-                    className="is-checkradio is-primary"
-                    type="checkbox"
-                    checked={votes.get(candidate.get('id'), false)}
-                    onChange={onClick(candidate.get('id'))}
-                    id={candidate.get('id')}
-                  />
-                  <label htmlFor={candidate.get('id')}>
-                    &nbsp;{candidate.get('name')}
-                  </label>
-                </div>
-              ))}
+    <form onSubmit={onSubmit}>
+      {election.get('positions').map(position => (
+        <div key={position.get('id')} className="content">
+          <h2 className="subtitle">{position.get('name')}</h2>
+          {position.get('candidates').map(candidate => (
+            <div className="field" key={candidate.get('id')}>
+              <input
+                className="is-checkradio is-primary"
+                type="checkbox"
+                checked={votes.get(candidate.get('id'), false)}
+                onChange={onClick(candidate.get('id'))}
+                id={candidate.get('id')}
+              />
+              <label htmlFor={candidate.get('id')}>
+                &nbsp;{candidate.get('name')}
+              </label>
             </div>
           ))}
-          <button
-            disabled={loading}
-            className={classnames('button is-primary', {'is-loading': loading})}
-          >Submit</button>
-        </form>
-      </div>
-    </section>
+        </div>
+      ))}
+      <button
+        disabled={loading}
+        className={classnames('button is-primary', {'is-loading': loading})}
+      >Submit</button>
+    </form>
   )
 }
 
