@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { fetchPost } from './util/fetch_helpers'
 import classnames from 'classnames'
 import { Map as ImmMap } from 'immutable'
 
 const VoteForm = ({ election }) => {
+  let history = useHistory()
   const [loading, setLoading] = useState(false)
   const [votes, setVotes] = useState(ImmMap())
 
@@ -15,9 +17,15 @@ const VoteForm = ({ election }) => {
     e.preventDefault()
     setLoading(true)
     fetchPost(
-      '/api/elections/' + election.get('id') + '/votes',
+      `/api/elections/${election.get('id')}/votes`,
       { vote: votes.toJS() })
-      .then(console.log)
+      .then(res => history.push({
+        pathname: `/elections/${election.get('id')}/voted`,
+        state: {
+          election: election.toJS(),
+          vote: res.toJS(),
+        }
+      }))
       // TODO: Show error message
       .catch(() => setLoading(false))
   }
@@ -31,16 +39,16 @@ const VoteForm = ({ election }) => {
               <h2 className="subtitle">{position.get('name')}</h2>
               {position.get('candidates').map(candidate => (
                 <div className="field" key={candidate.get('id')}>
-                  <div className="control">
-                    <label className="checkbox">
-                      <input
-                        type="checkbox"
-                        checked={votes.get(candidate.get('id'), false)}
-                        onChange={onClick(candidate.get('id'))}
-                      />
-                      &nbsp;{candidate.get('name')}
-                    </label>
-                  </div>
+                  <input
+                    className="is-checkradio is-primary"
+                    type="checkbox"
+                    checked={votes.get(candidate.get('id'), false)}
+                    onChange={onClick(candidate.get('id'))}
+                    id={candidate.get('id')}
+                  />
+                  <label htmlFor={candidate.get('id')}>
+                    &nbsp;{candidate.get('name')}
+                  </label>
                 </div>
               ))}
             </div>
