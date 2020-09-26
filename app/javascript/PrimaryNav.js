@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react"
 import { Link, withRouter } from "react-router-dom"
+import { withContext } from './context'
 
 class PrimaryNav extends PureComponent {
   state = { menuOpen: false }
@@ -17,6 +18,7 @@ class PrimaryNav extends PureComponent {
   }
 
   render() {
+    const metadata = this.props.context.get('metadata')
     return (
       <nav className="navbar has-shadow">
         <div className="container">
@@ -50,9 +52,17 @@ class PrimaryNav extends PureComponent {
               </Link>
             </div>
             <div className="navbar-end">
-              <Link className="navbar-item" to="/users/auth/google_oauth2">
-                Log In
-              </Link>
+              {metadata.get('signed_in') ?
+                <React.Fragment>
+                  <Link className="navbar-item" to="/admin">Admin</Link>
+                  <a className="navbar-item" href={metadata.get('logout_path')}>
+                    Logout
+                  </a>
+                </React.Fragment>:
+                <a className="navbar-item" href={metadata.get('google_login_path')}>
+                  Admin
+                </a>
+              }
             </div>
           </div>
         </div>
@@ -61,4 +71,4 @@ class PrimaryNav extends PureComponent {
   }
 }
 
-export default withRouter(PrimaryNav)
+export default withContext(withRouter(PrimaryNav))

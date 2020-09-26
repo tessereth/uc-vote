@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { fromJS } from 'immutable'
 import PrimaryNav from './PrimaryNav'
 import PrimaryFooter from './PrimaryFooter'
 import Home from './Home'
@@ -7,12 +8,13 @@ import About from './About'
 import Election from './Election'
 import Voted from './Voted'
 import UnknownPage from './UnknownPage'
-import { Provider, testContext, reducer } from './context'
+import { Provider, reducer } from './context'
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { context: testContext.set('dispatch', this.dispatch) }
+    const metadata = JSON.parse(document.getElementById('metadata').innerHTML)
+    this.state = { context: fromJS({ metadata, dispatch: this.dispatch }) }
   }
 
   dispatch = action => {
