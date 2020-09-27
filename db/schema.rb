@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_26_073432) do
+ActiveRecord::Schema.define(version: 2020_09_27_011150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,6 +54,14 @@ ActiveRecord::Schema.define(version: 2020_09_26_073432) do
     t.index ["election_id"], name: "index_positions_on_election_id"
   end
 
+  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "role", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_roles_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "name", default: "", null: false
@@ -75,5 +83,6 @@ ActiveRecord::Schema.define(version: 2020_09_26_073432) do
   add_foreign_key "candidate_votes", "votes"
   add_foreign_key "candidates", "positions"
   add_foreign_key "positions", "elections"
+  add_foreign_key "roles", "users"
   add_foreign_key "votes", "elections"
 end

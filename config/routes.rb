@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
       resources :votes, only: :create
     end
+
+    namespace :admin do
+      resources :elections, only: %i[index show]
+    end
   end
 
   root 'root#index'

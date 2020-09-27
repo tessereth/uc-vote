@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { fetchGet } from './util/fetch_helpers'
 import VoteForm from './VoteForm'
 import Hero from './util/Hero'
+import LoadingSection from './util/LoadingSection'
 
 const Election = () => {
   let { id } = useParams()
@@ -18,35 +19,29 @@ const Election = () => {
   }, [id])
 
   return (
-    loading ?
+    <LoadingSection loading={loading}>
+      <Hero title={election.get('name')} />
       <section className="section">
         <div className="container">
-          <progress className="progress is-primary"/>
-        </div>
-      </section> :
-      <React.Fragment>
-        <Hero title={election.get('name')} />
-        <section className="section">
-          <div className="container">
-            <div className="content">
-              <p>
-                {election.get('description')}
-              </p>
-              {termsAccepted ?
-                <VoteForm election={election} /> :
-                <React.Fragment>
-                  <p>
-                    Please confirm that you are eligible to vote and have not already voted in this election.
-                  </p>
-                  <button className="button is-primary" onClick={() => setTermsAccepted(true)}>
-                    Yes, I can vote
-                  </button>
-                </React.Fragment>
-              }
-            </div>
+          <div className="content">
+            <p>
+              {election.get('description')}
+            </p>
+            {termsAccepted ?
+              <VoteForm election={election} /> :
+              <React.Fragment>
+                <p>
+                  Please confirm that you are eligible to vote and have not already voted in this election.
+                </p>
+                <button className="button is-primary" onClick={() => setTermsAccepted(true)}>
+                  Yes, I can vote
+                </button>
+              </React.Fragment>
+            }
           </div>
-        </section>
-      </React.Fragment>
+        </div>
+      </section>
+    </LoadingSection>
   )
 }
 
