@@ -27,21 +27,19 @@ class VotesController < ApplicationController
   end
 
   def validate_token
-    return render json: { error: 'Missing voting code.' }, status: :not_found unless params[:token]
-
     @vote_token = @election.vote_tokens.find_by(token: params[:token])
-    return render json: { error: 'Unknown voting code.' }, status: :not_found if @vote_token.nil?
+    return render_error(:not_found, 'Unknown voting code.') if @vote_token.nil?
 
     case @vote_token.state
     when 'new', 'distributed'
       # Happy case
     when 'used'
-      render json: { error: 'Voting code has already been used.' }, status: :bad_request
+      render_error(:bad_request, 'This voting code has already been used.')
     when 'revoked'
-      render json: { error: 'This voting code has been revoked and can no longer be used.' }, status: :bad_request
+      render_error(:bad_request, 'This voting code has been revoked and can no longer be used.')
     else
       # Should never happen
-      render json: { error: 'Unknown voting code.' }, status: :not_found
+      render_error(:not_found, 'Unknown voting code.')
     end
   end
 end

@@ -2,35 +2,29 @@ import { fromJS } from 'immutable'
 
 export function fetchGet(url, params={}) {
   const urlParams = new URLSearchParams(params)
-  return fetch(url + '?' + urlParams.toString(), {
+  return formatResponse(fetch(url + '?' + urlParams.toString(), {
     method: 'GET',
     headers: defaultHeaders()
-  })
-    .then(res => {
-      if (res.ok) {
-        return res
-      } else {
-        throw new Error('Failed to fetch')
-      }
-    })
-    .then(res => res.json())
-    .then(fromJS)
+  }))
 }
 
 export function fetchPost(url, params={}) {
-  return fetch(url, {
+  return formatResponse(fetch(url, {
     method: 'POST',
     headers: defaultHeaders(),
     body: 'toJS' in params ? JSON.stringify(params.toJS()) : JSON.stringify(params)
-  })
+  }))
+}
+
+function formatResponse(res) {
+  return res.then(res => res.json().then(json => ({ res, json })))
     .then(res => {
-      if (res.ok) {
-        return res
+      if (res.res.ok) {
+        return res.json
       } else {
-        throw new Error('Failed to fetch')
+        throw new FetchException('Failed to fetch', res.json)
       }
     })
-    .then(res => res.json())
     .then(fromJS)
 }
 
@@ -41,3 +35,11 @@ function defaultHeaders() {
     'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
   }
 }
+
+function FetchException(message, json) {
+  const error = new Error(message)
+  error.serverMessage = json.error
+  return error
+}
+
+FetchException.prototype = Object.create(Error.prototype)

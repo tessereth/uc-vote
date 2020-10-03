@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Map as ImmMap } from 'immutable'
 import { fetchGet } from './util/fetch_helpers'
 import VoteForm from './VoteForm'
@@ -13,12 +13,13 @@ const Vote = () => {
   const [election, setElection] = useState(ImmMap())
   const [loading, setLoading] = useState(true)
   const token = useToken()
+  const history = useHistory()
 
   useEffect(() => {
     fetchGet(`/api/elections/${slug}/votes/new`, { token })
       .then(res => setElection(res))
-      // TODO: Show error message
-      .finally(() => setLoading(false))
+      .then(() => setLoading(false))
+      .catch(error => history.push({ pathname: `/elections/${slug}`, state: { flashMessage: error.serverMessage } }))
   }, [slug])
 
   return (

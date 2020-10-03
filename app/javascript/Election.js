@@ -7,6 +7,7 @@ import LoadingSection from './util/LoadingSection'
 import ElectionTokenForm from './ElectionTokenForm'
 import useToken from './util/useToken'
 import ReactMarkdown from 'react-markdown'
+import useFlashMessage from './util/useFlashMessage'
 
 const Election = () => {
   let { slug } = useParams()
@@ -15,6 +16,7 @@ const Election = () => {
   const location = useLocation()
   const history = useHistory()
   const token = useToken()
+  const flashMessage = useFlashMessage()
 
   useEffect(() => {
     if (token) {
@@ -32,6 +34,16 @@ const Election = () => {
       <Hero title={election.get('name')} />
       <section className="section">
         <div className="container">
+          {flashMessage &&
+            <article className="message is-danger">
+              <div className="message-body">
+                <div className="content">
+                  <p>{flashMessage}</p>
+                  <p>Please provide a valid voting code to continue.</p>
+                </div>
+              </div>
+            </article>
+          }
           <div className="content">
             <ReactMarkdown source={election.get('description')} />
             <p>
