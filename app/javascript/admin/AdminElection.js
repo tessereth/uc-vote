@@ -4,8 +4,6 @@ import { fetchGet } from '../util/fetch_helpers'
 import LoadingSection from '../util/LoadingSection'
 import Hero from '../util/Hero'
 import { Link, NavLink, useParams, Switch, Route } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
-import { StateTag, VisibilityTag } from './tags'
 import ElectionView from './ElectionView'
 import ElectionEdit from './ElectionEdit'
 
