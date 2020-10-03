@@ -4,7 +4,7 @@ import { fetchPost } from './util/fetch_helpers'
 import classnames from 'classnames'
 import { Map as ImmMap } from 'immutable'
 
-const VoteForm = ({ election }) => {
+const VoteForm = ({ election, token }) => {
   let history = useHistory()
   const [loading, setLoading] = useState(false)
   const [votes, setVotes] = useState(ImmMap())
@@ -17,10 +17,10 @@ const VoteForm = ({ election }) => {
     e.preventDefault()
     setLoading(true)
     fetchPost(
-      `/api/elections/${election.get('id')}/votes`,
-      { vote: votes.toJS() })
+      `/api/elections/${election.get('slug')}/votes`,
+      { vote: votes.toJS(), token })
       .then(res => history.push({
-        pathname: `/elections/${election.get('id')}/voted`,
+        pathname: `/elections/${election.get('slug')}/voted`,
         state: {
           election: election.toJS(),
           vote: res.toJS(),

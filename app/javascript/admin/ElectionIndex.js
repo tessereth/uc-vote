@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { fetchGet } from '../util/fetch_helpers'
 import { List } from 'immutable'
 import LoadingSection from '../util/LoadingSection'
+import Hero from '../util/Hero'
 
 const ElectionIndex = () => {
   const [elections, setElections] = useState(List())
@@ -17,6 +18,7 @@ const ElectionIndex = () => {
 
   return (
     <LoadingSection loading={loading}>
+      <Hero title="Elections" />
       <section className="section">
         <div className="container">
           {elections.map(election => (

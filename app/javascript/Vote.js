@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from "react"
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { Map as ImmMap } from 'immutable'
 import { fetchGet } from './util/fetch_helpers'
+import VoteForm from './VoteForm'
 import Hero from './util/Hero'
 import LoadingSection from './util/LoadingSection'
-import ElectionTokenForm from './ElectionTokenForm'
-import useToken from './util/useToken'
 import ReactMarkdown from 'react-markdown'
+import useToken from './util/useToken'
 
-const Election = () => {
+const Vote = () => {
   let { slug } = useParams()
   const [election, setElection] = useState(ImmMap())
   const [loading, setLoading] = useState(true)
-  const location = useLocation()
-  const history = useHistory()
   const token = useToken()
 
   useEffect(() => {
-    if (token) {
-      history.push({ pathname: `${location.pathname}/vote`, search: `?token=${token}` })
-    } else {
-      fetchGet('/api/elections/' + slug)
-        .then(res => setElection(res))
-        // TODO: Show error message
-        .finally(() => setLoading(false))
-    }
+    fetchGet(`/api/elections/${slug}/votes/new`, { token })
+      .then(res => setElection(res))
+      // TODO: Show error message
+      .finally(() => setLoading(false))
   }, [slug])
 
   return (
@@ -35,9 +29,9 @@ const Election = () => {
           <div className="content">
             <ReactMarkdown source={election.get('description')} />
             <p>
-              If you are eligible to vote in this election, please enter your voting code below.
+              If you are eligible to vote in this election, please vote for your preferred candidates below.
             </p>
-            <ElectionTokenForm election={election} token={token} />
+            <VoteForm election={election} token={token} />
           </div>
         </div>
       </section>
@@ -45,4 +39,4 @@ const Election = () => {
   )
 }
 
-export default Election
+export default Vote

@@ -8,10 +8,10 @@ Rails.application.routes.draw do
   scope :api do
     resources :elections, only: :show do
       collection do
-        post 'token'
+        get 'primary'
       end
 
-      resources :votes, only: :create
+      resources :votes, only: %i[new create]
     end
 
     namespace :admin do

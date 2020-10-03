@@ -4,13 +4,14 @@ import { fromJS } from 'immutable'
 import { Provider, reducer } from './context'
 import PrimaryNav from './PrimaryNav'
 import PrimaryFooter from './PrimaryFooter'
-import Home from './Home'
 import About from './About'
 import Election from './Election'
+import Vote from './Vote'
 import Voted from './Voted'
 import UnknownPage from './UnknownPage'
 import RequireViewer from './admin/RequireViewer'
 import ElectionIndex from './admin/ElectionIndex'
+import RedirectPrimary from './util/RedirectPrimary'
 
 class App extends Component {
   constructor(props) {
@@ -32,15 +33,18 @@ class App extends Component {
           <main>
             <Switch>
               <Route exact path="/">
-                <Home />
+                <RedirectPrimary />
               </Route>
               <Route exact path="/about">
                 <About />
               </Route>
-              <Route exact path="/elections/:id">
+              <Route exact path="/elections/:slug">
                 <Election />
               </Route>
-              <Route exact path="/elections/:id/voted">
+              <Route exact path="/elections/:slug/vote">
+                <Vote />
+              </Route>
+              <Route exact path="/elections/:slug/voted">
                 <Voted />
               </Route>
               <Route path="/admin">

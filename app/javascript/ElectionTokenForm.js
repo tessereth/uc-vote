@@ -1,26 +1,20 @@
 import React, { useState } from 'react'
-import classnames from 'classnames'
-import { useHistory } from 'react-router-dom'
-import { fetchPost } from './util/fetch_helpers'
+import { useLocation, useHistory } from 'react-router-dom'
 
 const ElectionTokenForm = () => {
   const [token, setToken] = useState('')
-  const [loading, setLoading] = useState(false)
   const history = useHistory()
+  const location = useLocation()
 
   const onSubmit = e => {
     e.preventDefault()
-    setLoading(true)
-    fetchPost('/api/elections/token', {token})
-      .then(res => history.push('/elections/' + res.get('id')))
-      // TODO: Show error message
-      .catch(() => setLoading(false))
+    history.push({ pathname: `${location.pathname}/vote`, search: `?token=${token}`})
   }
 
   return (
     <form onSubmit={onSubmit}>
       <div className="field">
-        <label className="label">Election code</label>
+        <label className="label">Voting code</label>
         <div className="field-body">
           <div className="field">
             <div className="control">
@@ -36,10 +30,7 @@ const ElectionTokenForm = () => {
         </div>
       </div>
       <div className="control">
-        <button
-          disabled={loading}
-          className={classnames('button is-primary', {'is-loading': loading})}
-        >Submit</button>
+        <button className="button is-primary">Continue</button>
       </div>
     </form>
   )

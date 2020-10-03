@@ -1,10 +1,9 @@
 class ElectionsController < ApplicationController
-  def token
-    @election = Election.find_by(token: params[:token])
-    render json: {error: 'Unknown token'}, status: :not_found unless @election
+  def primary
+    @election = Election.where(primary: true).first
   end
 
   def show
-    @election = Election.find(params[:id])
+    @election = Election.find_by!(slug: params[:id])
   end
 end

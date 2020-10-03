@@ -4,15 +4,15 @@ import { fromJS } from 'immutable'
 import Hero from './util/Hero'
 
 const Voted = () => {
-  const { id } = useParams()
+  const { slug } = useParams()
   const location = useLocation()
   const state = fromJS(location.state)
   const election = state && state.get('election')
   const vote = state && state.get('vote')
 
   if (!election || !vote) {
-    if (id) {
-      return <Redirect to={`/elections/${id}`}/>
+    if (slug) {
+      return <Redirect to={`/elections/${slug}`}/>
     } else {
       return <Redirect to="/"/>
     }
@@ -37,7 +37,7 @@ const Voted = () => {
                 <p>Please record this id in case you need to contact support.</p>
                 <p>
                   If someone else would like to vote in this election, you can{' '}
-                  <Link to={`/elections/${election.get('id')}`}>vote again</Link> or{' '}
+                  <Link to={`/elections/${election.get('slug')}`}>vote again</Link> or{' '}
                   <Link to="/">return to the home page</Link>.
                 </p>
               </div>

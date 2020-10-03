@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_27_011150) do
+ActiveRecord::Schema.define(version: 2020_10_03_022442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 2020_09_27_011150) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "voting_system"
+    t.boolean "primary", default: false, null: false
+    t.string "slug", null: false
     t.index ["token"], name: "index_elections_on_token"
   end
 
@@ -72,6 +74,15 @@ ActiveRecord::Schema.define(version: 2020_09_27_011150) do
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
+  create_table "vote_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "election_id", null: false
+    t.string "state", default: "new", null: false
+    t.string "token", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_vote_tokens_on_election_id"
+  end
+
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "election_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -84,5 +95,6 @@ ActiveRecord::Schema.define(version: 2020_09_27_011150) do
   add_foreign_key "candidates", "positions"
   add_foreign_key "positions", "elections"
   add_foreign_key "roles", "users"
+  add_foreign_key "vote_tokens", "elections"
   add_foreign_key "votes", "elections"
 end
