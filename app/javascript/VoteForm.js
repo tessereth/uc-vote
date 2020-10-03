@@ -4,7 +4,7 @@ import { fetchPost } from './util/fetch_helpers'
 import classnames from 'classnames'
 import { Map as ImmMap } from 'immutable'
 
-const VoteForm = ({ election, token }) => {
+const VoteForm = ({ election, token, disabled }) => {
   let history = useHistory()
   const [loading, setLoading] = useState(false)
   const [votes, setVotes] = useState(ImmMap())
@@ -47,6 +47,7 @@ const VoteForm = ({ election, token }) => {
                 checked={votes.get(candidate.get('id'), false)}
                 onChange={onClick(candidate.get('id'))}
                 id={candidate.get('id')}
+                disabled={disabled}
               />
               <label htmlFor={candidate.get('id')}>
                 &nbsp;{candidate.get('name')}
@@ -56,7 +57,7 @@ const VoteForm = ({ election, token }) => {
         </div>
       ))}
       <button
-        disabled={loading}
+        disabled={disabled || loading}
         className={classnames('button is-primary', {'is-loading': loading})}
       >Submit</button>
     </form>

@@ -44,9 +44,6 @@ class PrimaryNav extends PureComponent {
             className={`navbar-menu ${this.state.menuOpen ? "is-active" : ""}`}
           >
             <div className="navbar-start">
-              <Link to="/elections" className="navbar-item">
-                Elections
-              </Link>
               <Link to="/about" className="navbar-item">
                 About
               </Link>

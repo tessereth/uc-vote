@@ -1,9 +1,9 @@
 class ElectionsController < ApplicationController
   def primary
-    @election = Election.where(primary: true).first
+    @election = Election.visibility_public.find_by!(primary: true)
   end
 
   def show
-    @election = Election.find_by!(slug: params[:id])
+    @election = Election.visibility_public.find_by!(slug: params[:id])
   end
 end

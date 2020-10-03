@@ -11,7 +11,7 @@ import Voted from './Voted'
 import UnknownPage from './UnknownPage'
 import RequireViewer from './admin/RequireViewer'
 import ElectionIndex from './admin/ElectionIndex'
-import RedirectPrimary from './util/RedirectPrimary'
+import Home from './Home'
 
 class App extends Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class App extends Component {
           <main>
             <Switch>
               <Route exact path="/">
-                <RedirectPrimary />
+                <Home />
               </Route>
               <Route exact path="/about">
                 <About />

@@ -1,5 +1,6 @@
 import React from "react"
 import ElectionTokenForm from './ElectionTokenForm'
+import RedirectPrimary from './util/RedirectPrimary'
 
 const Home = () => (
   <React.Fragment>
@@ -15,7 +16,7 @@ const Home = () => (
     </section>
     <section className="section">
       <div className="container">
-        <ElectionTokenForm/>
+        <RedirectPrimary />
      </div>
     </section>
   </React.Fragment>

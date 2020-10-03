@@ -7,6 +7,9 @@ class VotesController < ApplicationController
 
   def create
     Election.transaction do
+      if @election.state != 'open'
+        return render_error(:bad_request, 'This election is not currently open for voting.')
+      end
       validate_token
       return if @vote_token.nil?
       @vote_token.update!(state: 'used')
@@ -23,7 +26,7 @@ class VotesController < ApplicationController
   private
 
   def set_election
-    @election = Election.find_by!(slug: params[:election_id])
+    @election = Election.visibility_public.find_by!(slug: params[:election_id])
   end
 
   def validate_token

@@ -8,6 +8,8 @@ import ElectionTokenForm from './ElectionTokenForm'
 import useToken from './util/useToken'
 import ReactMarkdown from 'react-markdown'
 import useFlashMessage from './util/useFlashMessage'
+import Callout from './util/Callout'
+import ElectionStateCallout from './ElectionStateCallout'
 
 const Election = () => {
   let { slug } = useParams()
@@ -24,8 +26,8 @@ const Election = () => {
     } else {
       fetchGet('/api/elections/' + slug)
         .then(res => setElection(res))
-        // TODO: Show error message
-        .finally(() => setLoading(false))
+        .then(() => setLoading(false))
+        .catch(error => history.push({ pathname: '/', state: { flashMessage: 'Unknown election.' } }))
     }
   }, [slug])
 
@@ -35,21 +37,22 @@ const Election = () => {
       <section className="section">
         <div className="container">
           {flashMessage &&
-            <article className="message is-danger">
-              <div className="message-body">
-                <div className="content">
-                  <p>{flashMessage}</p>
-                  <p>Please provide a valid voting code to continue.</p>
-                </div>
-              </div>
-            </article>
+            <Callout style="danger">
+              <p>{flashMessage}</p>
+              <p>Please provide a valid voting code to continue.</p>
+            </Callout>
           }
+          <ElectionStateCallout state={election.get('state')} />
           <div className="content">
             <ReactMarkdown source={election.get('description')} />
-            <p>
-              If you are eligible to vote in this election, please enter your voting code below.
-            </p>
-            <ElectionTokenForm election={election} token={token} />
+            {election.get('state') !== 'closed' && (
+              <React.Fragment>
+                <p>
+                  If you are eligible to vote in this election, please enter your voting code below.
+                </p>
+                <ElectionTokenForm election={election} token={token} />
+              </React.Fragment>
+            )}
           </div>
         </div>
       </section>

@@ -7,6 +7,7 @@ import Hero from './util/Hero'
 import LoadingSection from './util/LoadingSection'
 import ReactMarkdown from 'react-markdown'
 import useToken from './util/useToken'
+import ElectionStateCallout from './ElectionStateCallout'
 
 const Vote = () => {
   let { slug } = useParams()
@@ -27,12 +28,13 @@ const Vote = () => {
       <Hero title={election.get('name')} />
       <section className="section">
         <div className="container">
+          <ElectionStateCallout state={election.get('state')} />
           <div className="content">
             <ReactMarkdown source={election.get('description')} />
             <p>
               If you are eligible to vote in this election, please vote for your preferred candidates below.
             </p>
-            <VoteForm election={election} token={token} />
+            <VoteForm election={election} token={token} disabled={election.get('state') !== 'open'} />
           </div>
         </div>
       </section>
