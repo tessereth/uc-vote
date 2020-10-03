@@ -26,7 +26,7 @@ const AdminElection = () => {
 
   return (
     <LoadingSection loading={loading}>
-      <Hero title={election.get('name')} style="danger" />
+      <Hero title={`Admin: ${election.get('name')}`} style="danger" />
       <section className="section">
         <div className="container">
           <div className="tabs">

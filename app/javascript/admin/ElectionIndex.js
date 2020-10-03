@@ -20,7 +20,7 @@ const ElectionIndex = () => {
 
   return (
     <LoadingSection loading={loading}>
-      <Hero title="Elections" style="danger" />
+      <Hero title="Admin: Elections" style="danger" />
       <section className="section">
         <div className="container">
           {elections.map(election => (
