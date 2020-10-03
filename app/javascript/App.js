@@ -11,6 +11,7 @@ import Voted from './Voted'
 import UnknownPage from './UnknownPage'
 import RequireViewer from './admin/RequireViewer'
 import ElectionIndex from './admin/ElectionIndex'
+import AdminElection from './admin/AdminElection'
 import Home from './Home'
 
 class App extends Component {
@@ -52,6 +53,9 @@ class App extends Component {
                   <Switch>
                     <Route exact path="/admin">
                       <ElectionIndex />
+                    </Route>
+                    <Route exact path="/admin/elections/:slug">
+                      <AdminElection />
                     </Route>
                     <Route path="*">
                       <UnknownPage />

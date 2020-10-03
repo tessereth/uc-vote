@@ -1,9 +1,9 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 
-const Hero = ({ title, subtitle, pageTitle }) => {
+const Hero = ({ title, subtitle, pageTitle, style }) => {
   return (
-    <section className="hero is-primary">
+    <section className={`hero is-${style || 'primary'}`}>
       <Helmet>
         <title>{pageTitle || title}</title>
       </Helmet>
