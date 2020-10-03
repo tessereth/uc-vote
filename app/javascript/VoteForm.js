@@ -26,8 +26,12 @@ const VoteForm = ({ election, token }) => {
           vote: res.toJS(),
         }
       }))
-      // TODO: Show error message
-      .catch(() => setLoading(false))
+      .catch(error => (
+        history.push({
+          pathname: `/elections/${election.get('slug')}`,
+          state: { flashMessage: error.serverMessage }
+        })
+      ))
   }
 
   return (
