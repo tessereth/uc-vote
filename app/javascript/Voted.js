@@ -23,7 +23,7 @@ const Voted = () => {
       <Hero title={election.get('name')} />
       <section className="section">
         <div className="container">
-          <article className="message is-success">
+          <article className="message is-info">
             <div className="message-header">
               <p>Vote recorded</p>
             </div>
@@ -37,8 +37,7 @@ const Voted = () => {
                 <p>Please record this id in case you need to contact support.</p>
                 <p>
                   If someone else would like to vote in this election, you can{' '}
-                  <Link to={`/elections/${election.get('slug')}`}>vote again</Link> or{' '}
-                  <Link to="/">return to the home page</Link>.
+                  <Link to={`/elections/${election.get('slug')}`}>enter a new voting code</Link>.
                 </p>
               </div>
             </div>
