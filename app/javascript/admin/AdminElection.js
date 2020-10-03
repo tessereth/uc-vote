@@ -3,14 +3,21 @@ import { Map as ImmMap } from 'immutable'
 import { fetchGet } from '../util/fetch_helpers'
 import LoadingSection from '../util/LoadingSection'
 import Hero from '../util/Hero'
-import { Link, useParams } from 'react-router-dom'
+import { Link, NavLink, useParams, Switch, Route } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { StateTag, VisibilityTag } from './tags'
+import ElectionView from './ElectionView'
+import ElectionEdit from './ElectionEdit'
+
+const TabLink = React.forwardRef(({ children, className, href }, ref) => (
+  <li className={className}><Link to={href} ref={ref}>{children}</Link></li>
+))
 
 const AdminElection = () => {
   const { slug } = useParams()
   const [election, setElection] = useState(ImmMap())
   const [loading, setLoading] = useState(true)
+  const basePath = `/admin/elections/${slug}`
 
   useEffect(() => {
     fetchGet(`/api/admin/elections/${slug}`)
@@ -24,13 +31,30 @@ const AdminElection = () => {
       <Hero title={election.get('name')} style="danger" />
       <section className="section">
         <div className="container">
-          <div className="tags">
-            <VisibilityTag visibility={election.get('visibility')} />
-            <StateTag state={election.get('state')} />
+          <div className="tabs">
+            <ul>
+              <NavLink to={basePath} activeClassName="is-active" exact component={TabLink}>
+                View
+              </NavLink>
+              <NavLink to={`${basePath}/edit`} activeClassName="is-active" exact component={TabLink}>
+                Edit
+              </NavLink>
+              <NavLink to={`${basePath}/tokens`} activeClassName="is-active" exact component={TabLink}>
+                Tokens
+              </NavLink>
+            </ul>
           </div>
-          <div className="content">
-            <ReactMarkdown>{election.get('description')}</ReactMarkdown>
-          </div>
+          <Switch>
+            <Route exact path={basePath}>
+              <ElectionView election={election} />
+            </Route>
+            <Route exact path={`${basePath}/edit`}>
+              <ElectionEdit election={election} setElection={setElection} />
+            </Route>
+            <Route exact path={`${basePath}/tokens`}>
+              <div />
+            </Route>
+          </Switch>
         </div>
       </section>
     </LoadingSection>

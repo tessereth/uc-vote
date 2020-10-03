@@ -54,7 +54,7 @@ class App extends Component {
                     <Route exact path="/admin">
                       <ElectionIndex />
                     </Route>
-                    <Route exact path="/admin/elections/:slug">
+                    <Route path="/admin/elections/:slug">
                       <AdminElection />
                     </Route>
                     <Route path="*">

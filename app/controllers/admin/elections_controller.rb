@@ -9,4 +9,11 @@ class Admin::ElectionsController < ApplicationController
   def show
     @election = Election.find_by!(slug: params[:id])
   end
+
+  def update
+    render status: :unauthorized unless current_user.admin?
+    @election = Election.find_by!(slug: params[:id])
+    @election.update!(params.require(:election).permit(:name, :description, :slug, :state, :visibility))
+    render :show
+  end
 end

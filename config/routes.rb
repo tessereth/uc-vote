@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
-      resources :elections, only: %i[index show]
+      resources :elections, only: %i[index show update]
     end
   end
 

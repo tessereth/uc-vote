@@ -16,6 +16,14 @@ export function fetchPost(url, params={}) {
   }))
 }
 
+export function fetchPatch(url, params={}) {
+  return formatResponse(fetch(url, {
+    method: 'PATCH',
+    headers: defaultHeaders(),
+    body: 'toJS' in params ? JSON.stringify(params.toJS()) : JSON.stringify(params)
+  }))
+}
+
 function formatResponse(res) {
   return res.then(res => res.json().then(json => ({ res, json })))
     .then(res => {
