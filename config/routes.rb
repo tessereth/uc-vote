@@ -21,6 +21,7 @@ Rails.application.routes.draw do
             patch :update
           end
         end
+        resources :votes, only: %i[index]
       end
     end
   end

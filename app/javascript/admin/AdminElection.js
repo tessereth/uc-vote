@@ -7,6 +7,7 @@ import { Link, NavLink, useParams, Switch, Route } from 'react-router-dom'
 import ElectionView from './ElectionView'
 import ElectionEdit from './ElectionEdit'
 import ElectionTokens from './ElectionTokens'
+import ElectionResults from './ElectionResults'
 
 const TabLink = React.forwardRef(({ children, className, href }, ref) => (
   <li className={className}><Link to={href} ref={ref}>{children}</Link></li>
@@ -41,6 +42,9 @@ const AdminElection = () => {
               <NavLink to={`${basePath}/tokens`} activeClassName="is-active" exact component={TabLink}>
                 Tokens
               </NavLink>
+              <NavLink to={`${basePath}/results`} activeClassName="is-active" exact component={TabLink}>
+                Results
+              </NavLink>
             </ul>
           </div>
           <Switch>
@@ -52,6 +56,9 @@ const AdminElection = () => {
             </Route>
             <Route exact path={`${basePath}/tokens`}>
               <ElectionTokens election={election} />
+            </Route>
+            <Route exact path={`${basePath}/results`}>
+              <ElectionResults election={election} />
             </Route>
           </Switch>
         </div>
