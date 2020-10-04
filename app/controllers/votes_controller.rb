@@ -31,7 +31,7 @@ class VotesController < ApplicationController
 
   def validate_token
     @vote_token = @election.vote_tokens.find_by(token: params[:token])
-    return render_error(:not_found, 'Unknown voting code.') if @vote_token.nil?
+    return render_error(:bad_request, 'Unknown voting code.') if @vote_token.nil?
 
     case @vote_token.state
     when 'new', 'distributed'
