@@ -1,24 +1,27 @@
-# README
+# UC Vote
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Rails and React app for voting in Uniting Church style elections.
 
-Things you may want to cover:
+Currently, the only supported voting mode is
+[Block Voting](https://en.wikipedia.org/wiki/Multiple_non-transferable_vote).
 
-* Ruby version
+## Development
 
-* System dependencies
+To run the application locally, you'll need:
 
-* Configuration
+* The ruby version given in [.ruby-version](./.ruby-version)
+    * Consider using [rbenv](https://github.com/rbenv/rbenv)
+* A current node version
+    * Consider using [n](https://github.com/tj/n)
+* A Google Oauth2 Client Id and Secret
+* PostgreSQL
 
-* Database creation
+Copy `.env.example` to `.env` and fill in all the environment variables. Then run:
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+bundle install
+yarn install
+rails db:create
+rails db:migrate
+rails serve & bin/webpack-dev-server
+```
