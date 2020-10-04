@@ -6,6 +6,7 @@ import Hero from '../util/Hero'
 import { Link, NavLink, useParams, Switch, Route } from 'react-router-dom'
 import ElectionView from './ElectionView'
 import ElectionEdit from './ElectionEdit'
+import ElectionTokens from './ElectionTokens'
 
 const TabLink = React.forwardRef(({ children, className, href }, ref) => (
   <li className={className}><Link to={href} ref={ref}>{children}</Link></li>
@@ -50,7 +51,7 @@ const AdminElection = () => {
               <ElectionEdit election={election} setElection={setElection} />
             </Route>
             <Route exact path={`${basePath}/tokens`}>
-              <div />
+              <ElectionTokens election={election} />
             </Route>
           </Switch>
         </div>

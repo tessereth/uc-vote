@@ -1,6 +1,7 @@
 class VoteToken < ApplicationRecord
-  ALLOWED_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
-  TOKEN_LENGTH = 6
+  # alphanumeric, except lI1, O0
+  ALLOWED_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'
+  TOKEN_LENGTH = 4
 
   belongs_to :election
 

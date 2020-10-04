@@ -15,7 +15,13 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
-      resources :elections, only: %i[index show update]
+      resources :elections, only: %i[index show update] do
+        resources :tokens, only: %i[index create] do
+          collection do
+            patch :update
+          end
+        end
+      end
     end
   end
 
