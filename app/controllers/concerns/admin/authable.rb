@@ -3,7 +3,7 @@ module Admin::Authable
 
   included do
     before_action :authenticate_user!
-    before_action :require_viewer!, only: %i[index show]
+    before_action :require_viewer!
     before_action :require_admin!, only: %i[new create edit update destroy]
   end
 
