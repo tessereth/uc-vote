@@ -99,6 +99,19 @@ RSpec.describe 'Votes', type: :request do
           expect(vote.candidate_votes.length).to eq(4)
           expect(vote.candidate_votes.where(block_vote: true).pluck(:candidate_id)).to eq([candidate1.id])
         end
+
+        context 'when too many candidates are selected' do
+          it 'returns a useful error message' do
+            post election_votes_path(
+                   election_id: election.slug,
+                   token: token.token,
+                   vote: { candidate1.id => true, candidate2.id => true, candidate3.id => false },
+                   format: :json)
+            expect(response).to have_http_status(:bad_request)
+            expect(response.parsed_body).to include('error' => include('Too many candidates'))
+            expect(election.votes.count).to eq(0)
+          end
+        end
       end
 
       context 'when token is used' do
@@ -108,6 +121,7 @@ RSpec.describe 'Votes', type: :request do
           post election_votes_path(election_id: election.slug, token: token.token, format: :json)
           expect(response).to have_http_status(:bad_request)
           expect(response.parsed_body).to include('error' => include('used'))
+          expect(election.votes.count).to eq(0)
         end
       end
 
@@ -118,6 +132,7 @@ RSpec.describe 'Votes', type: :request do
           post election_votes_path(election_id: election.slug, token: token.token, format: :json)
           expect(response).to have_http_status(:bad_request)
           expect(response.parsed_body).to include('error' => include('revoked'))
+          expect(election.votes.count).to eq(0)
         end
       end
 
@@ -129,6 +144,7 @@ RSpec.describe 'Votes', type: :request do
           post election_votes_path(election_id: election.slug, token: token.token, format: :json)
           expect(response).to have_http_status(:bad_request)
           expect(response.parsed_body).to include('error' => include('Unknown voting code'))
+          expect(election.votes.count).to eq(0)
         end
       end
     end
@@ -141,6 +157,7 @@ RSpec.describe 'Votes', type: :request do
         post election_votes_path(election_id: election.slug, token: token.token, format: :json)
         expect(response).to have_http_status(:bad_request)
         expect(response.parsed_body).to include('error' => include('not currently open'))
+        expect(election.votes.count).to eq(0)
       end
     end
 
@@ -151,6 +168,7 @@ RSpec.describe 'Votes', type: :request do
       it 'returns 404' do
         post election_votes_path(election_id: election.slug, token: token.token, format: :json)
         expect(response).to have_http_status(:not_found)
+        expect(election.votes.count).to eq(0)
       end
     end
   end

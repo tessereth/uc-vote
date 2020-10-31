@@ -10,7 +10,8 @@ class VotesController < ApplicationController
       if @election.state != 'open'
         return render_error(:bad_request, 'This election is not currently open for voting.')
       end
-      validate_token
+      return unless validate_token
+      return unless validate_seat_count
       return if @vote_token.nil?
       @vote_token.update!(state: 'used')
       @vote = Vote.new(election: @election)
@@ -31,18 +32,36 @@ class VotesController < ApplicationController
 
   def validate_token
     @vote_token = @election.vote_tokens.find_by(token: params[:token])
-    return render_error(:bad_request, 'Unknown voting code.') if @vote_token.nil?
+    if @vote_token.nil?
+      render_error(:bad_request, 'Unknown voting code.')
+      return false
+    end
 
     case @vote_token.state
     when 'new', 'distributed'
       # Happy case
+      return true
     when 'used'
       render_error(:bad_request, 'This voting code has already been used.')
+      return false
     when 'revoked'
       render_error(:bad_request, 'This voting code has been revoked and can no longer be used.')
+      return false
     else
       # Should never happen
       render_error(:not_found, 'Unknown voting code.')
+      return false
     end
+  end
+
+  def validate_seat_count
+    @election.positions.each do |position|
+      chosen = position.candidates.filter {|c| ActiveModel::Type::Boolean.new.cast(params[:vote].fetch(c.id, false))}
+      if chosen.count > position.seats
+        render_error(:bad_request, 'Too many candidates selected.')
+        return false
+      end
+    end
+    true
   end
 end

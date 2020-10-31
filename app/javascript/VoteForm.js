@@ -39,6 +39,7 @@ const VoteForm = ({ election, token, disabled }) => {
       {election.get('positions').map(position => (
         <div key={position.get('id')} className="content">
           <h2 className="subtitle">{position.get('name')}</h2>
+          <p><em>{`Check up to ${position.get('seats')} box${position.get('seats') > 1 ? 'es' : ''}.`}</em></p>
           {position.get('candidates').map(candidate => (
             <div className="field" key={candidate.get('id')}>
               <input

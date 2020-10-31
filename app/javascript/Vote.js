@@ -32,7 +32,7 @@ const Vote = () => {
           <div className="content">
             <ReactMarkdown source={election.get('description')} />
             <p>
-              If you are eligible to vote in this election, please vote for your preferred candidates below.
+              If you are eligible to vote in this election, please vote below.
             </p>
             <VoteForm election={election} token={token} disabled={election.get('state') !== 'open'} />
           </div>
