@@ -27,11 +27,6 @@ const Voted = () => {
           <Callout style="info" title="Vote recorded">
             <p>Thank you for voting in this election.</p>
             <p>
-              Your vote id is{' '}
-              <b>{vote.get('id', '<unknown>')}</b>.
-            </p>
-            <p>Please record this id in case you need to contact support.</p>
-            <p>
               If someone else would like to vote in this election, you can{' '}
               <Link to={`/elections/${election.get('slug')}`}>enter a new voting code</Link>.
             </p>

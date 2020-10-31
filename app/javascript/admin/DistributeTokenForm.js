@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { fetchPatch } from '../util/fetch_helpers'
 
 const DistributeTokenForm = ({ election, newTokens, setTokenData}) => {
-  const DOMAIN = 'uc-vote.com'
+  const DOMAIN = 'uc-vote.herokuapp.com'
   const [candidateTokens, setCandidateTokens] = useState(newTokens.slice(0, 1))
   const [copying, setCopying] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -18,7 +18,7 @@ const DistributeTokenForm = ({ election, newTokens, setTokenData}) => {
     const header = `Your code${plural ? 's' : ''} to vote in the election ${plural ? 'are' : 'is'}:\n\n`
     const footer = `\n\nEach code lets you vote once. To vote, follow the link or go directly to ${DOMAIN} and enter your code.`
     const body = candidateTokens
-      .map(token => `Code: ${token.get('token')}\nLink: https://${DOMAIN}/?token=${token.get('token')}`)
+      .map(token => `Code: ${token.get('token')}\nLink: https://${DOMAIN}/elections/${election.get('slug')}?token=${token.get('token')}`)
       .join('\n')
 
     return header + body + footer
@@ -64,6 +64,11 @@ const DistributeTokenForm = ({ election, newTokens, setTokenData}) => {
           <button className="button is-primary" disabled={loading}>
             Mark distributed
           </button>
+        </div>
+      </div>
+      <div className="field">
+        <div className="control">
+          <textarea value={copyText()} className="textarea" rows={copyText().split('\n').length} />
         </div>
       </div>
     </form>
