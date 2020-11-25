@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { fetchGet } from '../util/fetch_helpers'
 import { Map as ImmMap, List } from 'immutable'
+import { Link } from 'react-router-dom'
 import LoadingSection from '../util/LoadingSection'
 import GenerateTokenForm from './GenerateTokenForm'
 import DistributeTokenForm from './DistributeTokenForm'
@@ -76,7 +77,11 @@ const ElectionTokens = ({ election }) => {
             {tokenData.get('new', List()).map(token => (
               <tr key={token.get('id')}>
                 <td>{token.get('id')}</td>
-                <td>{token.get('token')}</td>
+                <td>
+                  <Link to={`/elections/${election.get('slug')}/vote?token=${token.get('token')}`}>
+                    {token.get('token')}
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
