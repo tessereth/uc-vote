@@ -7,4 +7,7 @@ class Election < ApplicationRecord
   enum visibility: { public: 'public', private: 'private' }, _prefix: true
   enum state: { draft: 'draft', pending: 'pending', open: 'open', closed: 'closed' }, _prefix: true
   enum voting_system: { block_voting: 'block_voting', preferential: 'preferential' }
+
+  validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
 end

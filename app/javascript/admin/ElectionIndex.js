@@ -23,6 +23,11 @@ const ElectionIndex = () => {
       <Hero title="Admin: Elections" style="danger" />
       <section className="section">
         <div className="container">
+          <div className="block">
+            <Link to="/admin/elections/new" className="button is-primary">
+              Create
+            </Link>
+          </div>
           {elections.map(election => (
             <div key={election.get('id')} className="block">
               <div className="card">

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { Map as ImmMap } from 'immutable'
 
 const VoteForm = ({ election, token, disabled }) => {
-  let history = useHistory()
+  const history = useHistory()
   const [loading, setLoading] = useState(false)
   const [votes, setVotes] = useState(ImmMap())
 
