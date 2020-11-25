@@ -39,12 +39,13 @@ const VoteForm = ({ election, token, disabled }) => {
       {election.get('positions').map(position => (
         <div key={position.get('id')} className="content">
           <h2 className="subtitle">{position.get('name')}</h2>
-          <p><em>{`Check up to ${position.get('seats')} box${position.get('seats') > 1 ? 'es' : ''}.`}</em></p>
+          {position.get('seats') > 1 && <p><em>{`Check up to ${position.get('seats')} boxes.`}</em></p>}
           {position.get('candidates').map(candidate => (
             <div className="field" key={candidate.get('id')}>
               <input
                 className="is-checkradio is-primary"
-                type="checkbox"
+                name={position.get('seats') === 1 ? position.get('id') : candidate.get('id')}
+                type={position.get('seats') === 1 ? 'radio' : 'checkbox'}
                 checked={votes.get(candidate.get('id'), false)}
                 onChange={onClick(candidate.get('id'))}
                 id={candidate.get('id')}
