@@ -16,3 +16,15 @@ export function StateTag({ state }) {
     </span>
   )
 }
+
+export function PrimaryTag({ primary }) {
+  if (primary) {
+    return (
+      <span className="tag is-primary">
+        primary
+      </span>
+      )
+  } else {
+    return null
+  }
+}

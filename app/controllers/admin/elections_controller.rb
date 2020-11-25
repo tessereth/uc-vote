@@ -11,7 +11,7 @@ class Admin::ElectionsController < ApplicationController
 
   def update
     @election = Election.find_by!(slug: params[:id])
-    @election.update!(params.require(:election).permit(:name, :description, :slug, :state, :visibility))
+    @election.update!(params.require(:election).permit(:name, :description, :slug, :state, :visibility, :primary))
     render :show
   end
 end

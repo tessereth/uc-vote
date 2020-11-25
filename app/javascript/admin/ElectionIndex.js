@@ -5,7 +5,7 @@ import { List } from 'immutable'
 import LoadingSection from '../util/LoadingSection'
 import Hero from '../util/Hero'
 import ReactMarkdown from 'react-markdown'
-import { StateTag, VisibilityTag } from './tags'
+import { StateTag, VisibilityTag, PrimaryTag } from './tags'
 
 const ElectionIndex = () => {
   const [elections, setElections] = useState(List())
@@ -35,6 +35,7 @@ const ElectionIndex = () => {
                 </header>
                 <div className="card-content">
                   <div className="tags">
+                    <PrimaryTag primary={election.get('primary')} />
                     <VisibilityTag visibility={election.get('visibility')} />
                     <StateTag state={election.get('state')} />
                   </div>

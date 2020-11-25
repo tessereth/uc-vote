@@ -111,6 +111,18 @@ const ElectionEdit = ({ election, setElection }) => {
           <label htmlFor="visibility-public">Public</label>
         </div>
       </div>
+      <div className="field">
+        <label className="label">Primary</label>
+        <input
+          className="is-checkradio"
+          name="primary"
+          id="primary"
+          type="checkbox"
+          checked={modifiedElection.get('primary')}
+          onChange={e => setModifiedElection(modifiedElection.set('primary', e.target.checked))}
+        />
+        <label htmlFor="primary">Primary</label>
+      </div>
       <button
         disabled={loading}
         className={classnames('button is-primary', {'is-loading': loading})}
