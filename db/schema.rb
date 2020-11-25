@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_31_124212) do
+ActiveRecord::Schema.define(version: 2020_11_25_104541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2020_10_31_124212) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "weight", default: 0, null: false
     t.index ["position_id"], name: "index_candidates_on_position_id"
   end
 

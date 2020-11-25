@@ -8,7 +8,7 @@ json.positions @election.positions.order(:name) do |position|
   json.id position.id
   json.name position.name
   json.seats position.seats
-  json.candidates position.candidates.order(:name) do |candidate|
+  json.candidates position.candidates.order(:weight, :name) do |candidate|
     json.id candidate.id
     json.name candidate.name
   end
